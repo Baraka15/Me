@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Dorah Bloch International School Bweyale | Live Results & Admissions</title>
+  <!-- Google Fonts + Font Awesome + Chart.js -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --lb-50: #ecf7ff;
+      --lb-100: #d9edfc;
+      --lb-300: #7fbbe6;
+      --lb-500: #2c7bc0;
+      --lb-600: #1e6aa8;
+      --lb-700: #155f96;
+      --lb-900: #0c3e60;
+      --grey-100: #f1f5f9;
+      --grey-200: #e2e8f0;
+      --grey-300: #cbd5e1;
+      --grey-600: #475569;
+      --grey-800: #1e293b;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+      background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+      color: #0a2540;
+      overflow-x: hidden;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--grey-200); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: var(--lb-500); border-radius: 10px; }
+
+    /* Glassmorphic Navbar */
+    .navbar {
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      padding: 0.9rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(44, 123, 192, 0.15);
+    }
+    .nav-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .logo h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      background: linear-gradient(125deg, var(--lb-700), var(--lb-500));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .logo p {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--grey-600);
+      letter-spacing: 0.5px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 600;
+      color: var(--grey-800);
+      transition: 0.2s;
+    }
+    .nav-links a:hover { color: var(--lb-500); }
+    .mobile-menu { display: none; font-size: 1.6rem; cursor: pointer; }
+
+    /* Hero with batch image background */
+    .hero {
+      background: linear-gradient(135deg, rgba(44,123,192,0.88), rgba(21,95,150,0.92)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+      background-size: cover;
+      background-position: center 25%;
+      min-height: 88vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+    }
+    .hero-content { max-width: 900px; padding: 2rem; animation: fadeUp 0.9s ease; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-content h2 { font-size: 3.4rem; font-weight: 800; text-shadow: 0 5px 20px rgba(0,0,0,0.2); }
+    .hero-badge {
+      background: rgba(255,255,240,0.2);
+      backdrop-filter: blur(8px);
+      display: inline-block;
+      padding: 0.5rem 1.5rem;
+      border-radius: 60px;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    .btn-group { margin-top: 2rem; display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      font-weight: 700;
+      transition: var(--transition);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary { background: white; color: var(--lb-700); box-shadow: 0 12px 25px -8px rgba(0,0,0,0.2); }
+    .btn-primary:hover { transform: translateY(-4px); background: #f0f9ff; }
+    .btn-outline { border: 2px solid white; color: white; background: transparent; }
+    .btn-outline:hover { background: white; color: var(--lb-700); }
+
+    /* Container & Cards */
+    .container { max-width: 1280px; margin: 0 auto; padding: 5rem 2rem; }
+    .section-title {
+      font-size: 2.6rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      position: relative;
+      display: inline-block;
+    }
+    .section-title:after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 0;
+      width: 80px;
+      height: 4px;
+      background: var(--lb-500);
+      border-radius: 4px;
+    }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-top: 3rem; }
+    .card-premium {
+      background: white;
+      border-radius: 2rem;
+      padding: 2rem;
+      box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.08);
+      transition: var(--transition);
+      border: 1px solid rgba(44,123,192,0.15);
+    }
+    .card-premium:hover { transform: translateY(-8px); box-shadow: var(--shadow-xl); }
+
+    /* Forms & Real-time panels */
+    .result-panel, .admission-panel {
+      background: white;
+      border-radius: 2rem;
+      padding: 2rem;
+      box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
+    }
+    .form-modern {
+      width: 100%;
+      padding: 0.9rem 1.2rem;
+      border: 1px solid var(--grey-300);
+      border-radius: 60px;
+      font-size: 1rem;
+      transition: 0.2s;
+      margin-bottom: 1rem;
+    }
+    .form-modern:focus {
+      outline: none;
+      border-color: var(--lb-500);
+      box-shadow: 0 0 0 3px rgba(44,123,192,0.2);
+    }
+    button {
+      background: var(--lb-500);
+      border: none;
+      color: white;
+      font-weight: 700;
+      padding: 0.8rem 2rem;
+      border-radius: 60px;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 1rem;
+    }
+    button:hover { background: var(--lb-700); transform: scale(0.98); }
+
+    /* Result card */
+    .result-card {
+      margin-top: 2rem;
+      background: var(--lb-50);
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      border-left: 6px solid var(--lb-500);
+    }
+    .progress-bar-bg {
+      background: #e2e8f0;
+      border-radius: 20px;
+      height: 8px;
+      width: 100%;
+      overflow: hidden;
+    }
+    .progress-fill { background: var(--lb-500); height: 8px; border-radius: 20px; width: 0%; }
+
+    /* Admission live list */
+    .admission-list {
+      max-height: 350px;
+      overflow-y: auto;
+      background: var(--grey-100);
+      border-radius: 1.5rem;
+      padding: 0.8rem;
+    }
+    .admission-item {
+      background: white;
+      margin: 0.7rem 0;
+      padding: 0.9rem 1rem;
+      border-radius: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .badge-light {
+      background: var(--lb-100);
+      color: var(--lb-700);
+      border-radius: 40px;
+      padding: 0.2rem 0.8rem;
+      font-weight: 600;
+      font-size: 0.75rem;
+    }
+
+    /* Dashboard KPI cards (real-time stats) */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    .stat-card {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      border-top: 4px solid var(--lb-500);
+      text-align: center;
+    }
+    .stat-value { font-size: 2.2rem; font-weight: 800; color: var(--lb-700); margin: 0.5rem 0; }
+    .stat-label { font-weight: 600; color: var(--grey-600); text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .live-badge {
+      background: #0f172a;
+      color: white;
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      font-family: monospace;
+      font-weight: 500;
+    }
+    footer {
+      background: var(--grey-800);
+      color: #94a3b8;
+      padding: 2.5rem;
+      text-align: center;
+    }
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .mobile-menu { display: block; }
+      .nav-container.responsive .nav-links { display: flex; flex-direction: column; width: 100%; margin-top: 1rem; gap: 1rem; }
+      .hero-content h2 { font-size: 2rem; }
+      .container { padding: 2.5rem 1.5rem; }
+    }
+    .toast-msg {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #1e293b;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 40px;
+      z-index: 2000;
+      font-weight: 500;
+      animation: fadeUp 0.3s ease;
+    }
+    canvas#resultChartCanvas { max-height: 220px; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <h1>📘 DORAH BLOCH</h1>
+        <p>International School Bweyale</p>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#mission-vision">Mission & Vision</a></li>
+        <li><a href="#results">Live Results</a></li>
+        <li><a href="#admissions">Senior Admissions</a></li>
+        <li><a href="#dashboard">Analytics</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="live-badge" id="liveClock"><i class="far fa-clock"></i> loading...</div>
+      <div class="mobile-menu" id="mobileMenuBtn"><i class="fas fa-bars"></i></div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <div class="hero-badge"><i class="fas fa-graduation-cap"></i> Light Blue & Grey | Since 2005</div>
+      <h2>Where Excellence Wears <span style="color:#c2e0ff;">Light Blue & Grey</span></h2>
+      <p style="font-size:1.2rem; margin-top:1rem;">Real-Time Results · Instant Senior Admissions · Future-Ready Analytics</p>
+      <div class="btn-group">
+        <a href="#results" class="btn btn-primary"><i class="fas fa-chart-simple"></i> Access Results Live</a>
+        <a href="#admissions" class="btn btn-outline"><i class="fas fa-user-plus"></i> Senior Application</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About & Mission/Vision -->
+  <section id="about" style="background: white;">
+    <div class="container">
+      <div class="grid-2">
+        <div class="card-premium">
+          <i class="fas fa-school" style="font-size: 2.5rem; color: var(--lb-500);"></i>
+          <h3 style="margin: 1rem 0;">Dorah Bloch Legacy</h3>
+          <p>Located in Bweyale, we blend Cambridge & National curriculum with cutting-edge technology. Our signature Light Blue & Grey uniform symbolizes discipline, unity, and academic brilliance. Over 96% of graduates join top global universities.</p>
+        </div>
+        <div class="card-premium">
+          <i class="fas fa-chalkboard-user" style="font-size: 2.5rem; color: var(--lb-500);"></i>
+          <h3 style="margin: 1rem 0;">Real-Time Ecosystem</h3>
+          <p>Learners access results instantly, parents track progress, and senior applicants receive immediate confirmation. All data is processed in real time — no delays, zero friction.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="mission-vision" style="background: var(--grey-100);">
+    <div class="container">
+      <h2 class="section-title">Our Compass</h2>
+      <div class="grid-2">
+        <div class="card-premium" style="background: linear-gradient(145deg, #fff, #f1f9fe);">
+          <i class="fas fa-bullseye" style="font-size: 2.2rem; color: var(--lb-700);"></i>
+          <h3>Mission</h3>
+          <p>To nurture lifelong learners and ethical leaders through innovative technology, personalized mentoring, and a globally relevant curriculum — while honoring the pride of our Light Blue & Grey uniform.</p>
+        </div>
+        <div class="card-premium" style="background: linear-gradient(145deg, #fff, #f1f9fe);">
+          <i class="fas fa-eye" style="font-size: 2.2rem; color: var(--lb-700);"></i>
+          <h3>Vision</h3>
+          <p>To become Africa’s most advanced digital-first school, setting benchmarks in real-time academic transparency and empowering every student to change the world.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REAL TIME RESULTS PORTAL -->
+  <section id="results" class="container">
+    <h2 class="section-title">📊 Live Results Portal</h2>
+    <p style="margin-bottom: 1.5rem;">Enter Student ID: <strong>DB1001, DB1002, DB1003, DB1004, DB1005, DB1006</strong> — instant marks & performance chart.</p>
+    <div class="result-panel">
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <input type="text" id="studentIdInput" class="form-modern" placeholder="Student ID (e.g., DB1001)" style="flex:2;">
+        <button id="fetchResultBtn"><i class="fas fa-bolt"></i> Fetch Live Results</button>
+      </div>
+      <div id="resultDisplayArea" style="margin-top: 2rem;"></div>
+    </div>
+  </section>
+
+  <!-- SENIOR ADMISSIONS REAL-TIME -->
+  <section id="admissions" style="background: var(--grey-100);">
+    <div class="container">
+      <h2 class="section-title">🎓 Senior Admissions (A-Level)</h2>
+      <p>Apply for Senior 5 or Senior 6 — immediate confirmation & real-time admission tracking. No delays, fully digital.</p>
+      <div class="grid-2" style="margin-top: 2rem;">
+        <div class="admission-panel">
+          <h3><i class="fas fa-file-signature"></i> Application Form</h3>
+          <form id="seniorApplicationForm">
+            <input type="text" id="appFullName" class="form-modern" placeholder="Full Name *" required>
+            <input type="email" id="appEmail" class="form-modern" placeholder="Email Address *" required>
+            <input type="tel" id="appPhone" class="form-modern" placeholder="Phone Number">
+            <select id="appSeniorClass" class="form-modern" required>
+              <option value="">Select Senior Class</option>
+              <option value="Senior 5 (Light Blue & Grey Batch)">Senior 5 (Light Blue & Grey Batch)</option>
+              <option value="Senior 6 (Graduating Class)">Senior 6 (Graduating Class)</option>
+            </select>
+            <input type="text" id="appPrevSchool" class="form-modern" placeholder="Previous School">
+            <button type="submit" id="submitSeniorBtn"><i class="fas fa-paper-plane"></i> Submit Admission (Real-Time)</button>
+          </form>
+          <div id="admissionToastMsg" style="margin-top: 1rem;"></div>
+        </div>
+        <div>
+          <div class="card-premium">
+            <h3><i class="fas fa-users-viewfinder"></i> Live Admission Queue <span id="admissionCountBadge" class="badge-light">0</span></h3>
+            <div id="liveAdmissionList" class="admission-list"><p style="color: gray;">✨ Submissions appear instantly. Apply now!</p></div>
+            <p class="badge-light" style="margin-top: 1rem;"><i class="fas fa-database"></i> Persisted across sessions</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIVE ANALYTICS DASHBOARD (Advanced real-time stats) -->
+  <section id="dashboard" class="container">
+    <h2 class="section-title">📈 Real-Time School Analytics</h2>
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card"><div class="stat-label">Total Students</div><div class="stat-value" id="statStudents">0</div><i class="fas fa-users"></i></div>
+      <div class="stat-card"><div class="stat-label">Avg Performance</div><div class="stat-value" id="statAvgPerf">0%</div><i class="fas fa-chart-line"></i></div>
+      <div class="stat-card"><div class="stat-label">Active Classes</div><div class="stat-value" id="statClasses">0</div><i class="fas fa-chalkboard"></i></div>
+      <div class="stat-card"><div class="stat-label">Attendance Rate</div><div class="stat-value" id="statAttendance">0%</div><i class="fas fa-calendar-check"></i></div>
+    </div>
+    <div class="card-premium">
+      <h3>Performance Distribution (Current Semester)</h3>
+      <canvas id="globalPerformanceChart" width="400" height="200" style="max-height: 300px; margin-top: 1rem;"></canvas>
+    </div>
+  </section>
+
+  <!-- Uniform Gallery & Contact -->
+  <section id="gallery" style="background: var(--grey-100);">
+    <div class="container">
+      <h2 class="section-title">💙 The Uniform Legacy | Batch of Excellence</h2>
+      <div class="grid-2" style="grid-template-columns: repeat(auto-fit, minmax(250px,1fr));">
+        <div class="card-premium" style="text-align: center;"><i class="fas fa-user-graduate" style="font-size: 3rem; color: var(--lb-500);"></i><h3>Light Blue Shirt</h3><p>Symbol of clarity and ambition</p></div>
+        <div class="card-premium" style="text-align: center;"><i class="fas fa-tshirt" style="font-size: 3rem; color: #64748b;"></i><h3>Grey Trousers/Skirt</h3><p>Strength & resilience</p></div>
+        <div class="card-premium" style="text-align: center;"><i class="fas fa-award" style="font-size: 3rem; color: var(--lb-500);"></i><h3>2025 Batch Achievers</h3><p>98% distinction rate</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" style="background: white;">
+    <div class="container">
+      <h2 class="section-title">Connect With Us</h2>
+      <div class="grid-2">
+        <div><i class="fas fa-map-pin"></i> Bweyale Town, Kiryandongo, Uganda<br><i class="fas fa-phone-alt"></i> +256 772 987 654<br><i class="fas fa-envelope"></i> registrar@dorahbloch.sc.ug<br><div style="margin-top: 1rem;"><i class="fab fa-facebook fa-2x" style="margin-right: 1rem; color:var(--lb-500);"></i><i class="fab fa-instagram fa-2x" style="color:var(--lb-500);"></i></div></div>
+        <div class="card-premium"><iframe src="https://maps.google.com/maps?q=Bweyale%2C%20Uganda&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="200" style="border:0; border-radius: 1rem;" allowfullscreen=""></iframe></div>
+      </div>
+    </div>
+  </section>
+  <footer><p>© 2025 Dorah Bloch International School Bweyale — Light Blue & Grey | Real-Time Academic Ecosystem | Among World’s Top-Tier Digital Schools</p></footer>
+
+  <script>
+    // ========== REAL-TIME STUDENT DATABASE ==========
+    const studentDB = {
+      "DB1001": { name: "Amara Nambi", class: "Senior 5", subjects: { Mathematics: 88, English: 79, Physics: 92, Chemistry: 85, Biology: 90 }, attendance: 96, grade: "A", percentage: 86.8 },
+      "DB1002": { name: "Ethan Ochieng", class: "Senior 6", subjects: { Mathematics: 96, English: 88, Physics: 94, Chemistry: 91, Biology: 89 }, attendance: 98, grade: "A+", percentage: 91.6 },
+      "DB1003": { name: "Grace Mirembe", class: "Senior 5", subjects: { Mathematics: 74, English: 82, Physics: 68, Chemistry: 71, Biology: 79 }, attendance: 92, grade: "B+", percentage: 74.8 },
+      "DB1004": { name: "Joshua Byaruhanga", class: "Senior 4", subjects: { Mathematics: 55, English: 62, Physics: 58, Chemistry: 49, Biology: 60 }, attendance: 88, grade: "C", percentage: 56.8 },
+      "DB1005": { name: "Princess Nakato", class: "Senior 6", subjects: { Mathematics: 99, English: 97, Physics: 98, Chemistry: 96, Biology: 100 }, attendance: 100, grade: "A++", percentage: 98.0 },
+      "DB1006": { name: "David Kipchoge", class: "Senior 5", subjects: { Mathematics: 85, English: 88, Physics: 90, Chemistry: 87, Biology: 89 }, attendance: 95, grade: "A", percentage: 87.8 }
+    };
+
+    // ========== RESULTS PORTAL ==========
+    let currentResultChart = null;
+    function renderResultWithChart(id, data) {
+      if (!data) return `<div class="result-card" style="background:#ffe6e6;"><i class="fas fa-exclamation-triangle"></i> No record for ID: ${id}. Use DB1001-DB1006</div>`;
+      const subjects = data.subjects;
+      const subjNames = Object.keys(subjects);
+      const scores = subjNames.map(s => subjects[s]);
+      setTimeout(() => {
+        const canvas = document.getElementById('resultChartCanvas');
+        if (canvas && currentResultChart) currentResultChart.destroy();
+        if (canvas) {
+          const ctx = canvas.getContext('2d');
+          currentResultChart = new Chart(ctx, {
+            type: 'bar',
+            data: { labels: subjNames, datasets: [{ label: 'Score (%)', data: scores, backgroundColor: '#2c7bc0', borderRadius: 8 }] },
+            options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'top' } } }
+          });
+        }
+      }, 20);
+      let subjectsHtml = `<div class="grid-2" style="gap:0.8rem; margin:1rem 0;">`;
+      for (let [sub, score] of Object.entries(subjects)) {
+        subjectsHtml += `<div><strong>${sub}</strong><div class="progress-bar-bg"><div class="progress-fill" style="width: ${score}%;"></div></div><span>${score}%</span></div>`;
+      }
+      subjectsHtml += `</div>`;
+      return `<div class="result-card"><div style="display:flex; justify-content:space-between;"><h3>🎓 ${data.name} <span class="badge-light">${id}</span></h3><h4>Class: ${data.class} | Grade: ${data.grade}</h4></div>${subjectsHtml}<hr><div><strong>Overall: ${data.percentage}%</strong> | Attendance: ${data.attendance}%</div><canvas id="resultChartCanvas" width="400" height="180" style="margin-top: 1rem;"></canvas><p class="badge-light"><i class="fas fa-clock"></i> Fetched: ${new Date().toLocaleTimeString()}</p></div>`;
+    }
+    document.getElementById('fetchResultBtn')?.addEventListener('click', () => {
+      let id = document.getElementById('studentIdInput').value.trim().toUpperCase();
+      const data = studentDB[id];
+      document.getElementById('resultDisplayArea').innerHTML = renderResultWithChart(id, data);
+    });
+
+    // ========== ADMISSIONS (LocalStorage + Real-Time) ==========
+    let admissionsArray = [];
+    function loadAdmissions() { const stored = localStorage.getItem('dorah_senior_admissions'); admissionsArray = stored ? JSON.parse(stored) : []; updateAdmissionsUI(); }
+    function saveAdmissions() { localStorage.setItem('dorah_senior_admissions', JSON.stringify(admissionsArray)); }
+    function updateAdmissionsUI() {
+      const listDiv = document.getElementById('liveAdmissionList');
+      const counter = document.getElementById('admissionCountBadge');
+      counter.innerText = admissionsArray.length;
+      if (!admissionsArray.length) { listDiv.innerHTML = `<p style="color: gray;">✨ No senior applications yet. Apply now!</p>`; return; }
+      const reversed = [...admissionsArray].reverse();
+      listDiv.innerHTML = reversed.map(app => `<div class="admission-item"><div><i class="fas fa-user-check"></i> <strong>${escapeHtml(app.fullName)}</strong> (${app.seniorClass})</div><div><span class="badge-light">ID: ${app.appId}</span> <small>${app.timeStr}</small></div></div>`).join('');
+    }
+    function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+    function generateAppId() { return 'DBI' + Math.floor(Math.random() * 9000 + 1000) + '-' + new Date().getTime().toString().slice(-6); }
+    function showToastMsg(msg, isError = false) {
+      const toastDiv = document.getElementById('admissionToastMsg');
+      toastDiv.innerHTML = `<div style="background: ${isError ? '#f8d7da' : '#d1e7dd'}; color:${isError ? '#721c24' : '#0f5132'}; padding:12px; border-radius: 60px; text-align:center;">${msg}</div>`;
+      setTimeout(() => toastDiv.innerHTML = '', 4000);
+    }
+    document.getElementById('seniorApplicationForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const fullName = document.getElementById('appFullName').value.trim();
+      const email = document.getElementById('appEmail').value.trim();
+      const phone = document.getElementById('appPhone').value.trim();
+      const seniorClass = document.getElementById('appSeniorClass').value;
+      const prevSchool = document.getElementById('appPrevSchool').value.trim();
+      if (!fullName || !email || !seniorClass) { showToastMsg('❌ Please fill required fields', true); return; }
+      if (!email.includes('@')) { showToastMsg('❌ Valid email required', true); return; }
+      const newApp = { id: Date.now(), appId: generateAppId(), fullName, email, phone: phone || '—', seniorClass, prevSchool: prevSchool || 'Not provided', timeStr: new Date().toLocaleTimeString([], { hour: '2-digit', minute:'2-digit' }), timestamp: Date.now() };
+      admissionsArray.push(newApp);
+      saveAdmissions();
+      updateAdmissionsUI();
+      document.getElementById('seniorApplicationForm').reset();
+      showToastMsg(`✅ Admission submitted! ID: ${newApp.appId}. Real-time confirmation sent.`, false);
+    });
+
+    // ========== DASHBOARD STATS & GLOBAL CHARTS ==========
+    function updateDashboardStats() {
+      const students = Object.values(studentDB);
+      const total = students.length;
+      const avgPerf = (students.reduce((sum, s) => sum + s.percentage, 0) / total).toFixed(1);
+      const avgAttend = (students.reduce((sum, s) => sum + s.attendance, 0) / total).toFixed(1);
+      const uniqueClasses = new Set(students.map(s => s.class)).size;
+      document.getElementById('statStudents').innerText = total;
+      document.getElementById('statAvgPerf').innerText = avgPerf + '%';
+      document.getElementById('statClasses').innerText = uniqueClasses;
+      document.getElementById('statAttendance').innerText = avgAttend + '%';
+    }
+    let globalChart = null;
+    function initGlobalChart() {
+      const students = Object.values(studentDB);
+      const ranges = { 'A++ (95-100%)': 0, 'A+ (90-94%)': 0, 'A (85-89%)': 0, 'B+ (80-84%)': 0, 'B (70-79%)': 0, 'C (Below 70%)': 0 };
+      students.forEach(s => {
+        if (s.percentage >= 95) ranges['A++ (95-100%)']++;
+        else if (s.percentage >= 90) ranges['A+ (90-94%)']++;
+        else if (s.percentage >= 85) ranges['A (85-89%)']++;
+        else if (s.percentage >= 80) ranges['B+ (80-84%)']++;
+        else if (s.percentage >= 70) ranges['B (70-79%)']++;
+        else ranges['C (Below 70%)']++;
+      });
+      const ctx = document.getElementById('globalPerformanceChart')?.getContext('2d');
+      if (!ctx) return;
+      if (globalChart) globalChart.destroy();
+      globalChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: { labels: Object.keys(ranges), datasets: [{ data: Object.values(ranges), backgroundColor: ['#059669', '#10b981', '#6ee7b7', '#a7f3d0', '#d1fae5', '#fecaca'] }] },
+        options: { responsive: true, plugins: { legend: { position: 'right' } } }
+      });
+    }
+    function refreshAllAnalytics() { updateDashboardStats(); initGlobalChart(); }
+
+    // ========== LIVE CLOCK & MOBILE MENU ==========
+    function updateClock() {
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute:'2-digit', second:'2-digit' });
+      const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      document.getElementById('liveClock').innerHTML = `<i class="far fa-clock"></i> ${dateStr} ${timeStr}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+    document.getElementById('mobileMenuBtn')?.addEventListener('click', () => { document.querySelector('.nav-container').classList.toggle('responsive'); });
+    window.addEventListener('load', () => { loadAdmissions(); refreshAllAnalytics(); });
+    // auto refresh stats every 15 sec
+    setInterval(refreshAllAnalytics, 15000);
+  </script>
+</body>
+</html>
