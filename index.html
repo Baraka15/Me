@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Dorah Bloch Advanced Real-Time Management System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.45.0/dist/apexcharts.min.js"></script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --lb-50: #ecf7ff;
+      --lb-100: #d9edfc;
+      --lb-300: #7fbbe6;
+      --lb-500: #2c7bc0;
+      --lb-700: #155f96;
+      --lb-900: #0c3e60;
+      --grey-100: #f1f5f9;
+      --grey-300: #cbd5e1;
+      --grey-600: #475569;
+      --grey-800: #1e293b;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --glass-white: rgba(255, 255, 255, 0.85);
+      --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+      background: linear-gradient(135deg, #f5faff 0%, #f0f4f8 100%);
+      color: #0a2540;
+      overflow-x: hidden;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* ADVANCED DASHBOARD GRID */
+    .dashboard-container {
+      max-width: 1920px;
+      margin: 0 auto;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    /* KPI Cards with Live Updates */
+    .kpi-card {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.1);
+      border-left: 5px solid var(--lb-500);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-2xl);
+    }
+
+    .kpi-card.live::after {
+      content: '●';
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      color: #ef4444;
+      font-size: 1.2rem;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .kpi-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--lb-700);
+      margin: 0.5rem 0;
+    }
+
+    .kpi-label {
+      font-size: 0.9rem;
+      color: var(--grey-600);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .kpi-change {
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+      padding: 0.5rem 0.8rem;
+      border-radius: 50px;
+      display: inline-block;
+      font-weight: 600;
+    }
+
+    .kpi-change.positive {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .kpi-change.negative {
+      background: #fee2e2;
+      color: #7f1d1d;
+    }
+
+    /* Advanced Charts Section */
+    .charts-grid {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .chart-container {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 2rem;
+      box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.1);
+    }
+
+    .chart-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Real-Time Tables */
+    .real-time-table {
+      grid-column: 1 / -1;
+      background: white;
+      border-radius: 1.5rem;
+      padding: 2rem;
+      box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .table-controls {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      padding: 0.8rem 1.2rem;
+      border: 2px solid var(--grey-300);
+      border-radius: 50px;
+      font-size: 0.95rem;
+      transition: 0.2s;
+      min-width: 250px;
+    }
+
+    .search-box:focus {
+      outline: none;
+      border-color: var(--lb-500);
+      box-shadow: 0 0 0 3px rgba(44, 123, 192, 0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      background: var(--grey-100);
+      padding: 1rem;
+      text-align: left;
+      font-weight: 700;
+      color: var(--grey-800);
+      border-bottom: 2px solid var(--grey-300);
+    }
+
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--grey-300);
+    }
+
+    tr:hover {
+      background: var(--lb-50);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .status-active {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .status-pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-inactive {
+      background: #fee2e2;
+      color: #7f1d1d;
+    }
+
+    /* Real-Time Notifications */
+    .notification-panel {
+      grid-column: 1 / -1;
+      background: white;
+      border-radius: 1.5rem;
+      padding: 2rem;
+      box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.1);
+    }
+
+    .notification-item {
+      background: var(--grey-100);
+      padding: 1rem;
+      border-radius: 1rem;
+      margin-bottom: 0.8rem;
+      border-left: 4px solid var(--lb-500);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .notification-content {
+      flex: 1;
+    }
+
+    .notification-time {
+      font-size: 0.8rem;
+      color: var(--grey-600);
+    }
+
+    /* Advanced Filters */
+    .filter-panel {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.1);
+    }
+
+    .filter-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-select {
+      padding: 0.8rem 1rem;
+      border: 2px solid var(--grey-300);
+      border-radius: 0.5rem;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .filter-select:focus {
+      outline: none;
+      border-color: var(--lb-500);
+      box-shadow: 0 0 0 3px rgba(44, 123, 192, 0.1);
+    }
+
+    .btn-filter {
+      padding: 0.8rem 1.5rem;
+      background: var(--lb-500);
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+
+    .btn-filter:hover {
+      background: var(--lb-700);
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 2rem;
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-2xl);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid var(--grey-300);
+      padding-bottom: 1rem;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--grey-600);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1440px) {
+      .dashboard-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-container {
+        grid-template-columns: 1fr;
+      }
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+      table {
+        font-size: 0.9rem;
+      }
+      th, td {
+        padding: 0.7rem;
+      }
+    }
+
+    /* Loading Animation */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(44, 123, 192, 0.2);
+      border-radius: 50%;
+      border-top-color: var(--lb-500);
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Advanced Navbar */
+    .navbar {
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(44, 123, 192, 0.1);
+    }
+
+    .nav-container {
+      max-width: 1920px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(125deg, var(--lb-700), var(--lb-500));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .nav-stats {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-stat {
+      text-align: center;
+    }
+
+    .nav-stat-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--lb-700);
+    }
+
+    .nav-stat-label {
+      font-size: 0.75rem;
+      color: var(--grey-600);
+      font-weight: 600;
+    }
+
+    /* Real-Time Sync Indicator */
+    .sync-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: #d1fae5;
+      color: #065f46;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .sync-dot {
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    /* Student/Staff Card */
+    .person-card {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.2rem;
+      box-shadow: 0 5px 15px -10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1rem;
+      border-left: 4px solid var(--lb-500);
+    }
+
+    .person-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .person-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--lb-500), var(--lb-300));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .person-info {
+      flex: 1;
+    }
+
+    .person-name {
+      font-weight: 700;
+      color: var(--grey-800);
+    }
+
+    .person-id {
+      font-size: 0.85rem;
+      color: var(--grey-600);
+    }
+
+    .person-details {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.8rem;
+      flex-wrap: wrap;
+      font-size: 0.85rem;
+    }
+
+    .detail-item {
+      background: var(--lb-50);
+      padding: 0.4rem 0.8rem;
+      border-radius: 0.4rem;
+      color: var(--lb-700);
+    }
+  </style>
+</head>
+<body>
+  <!-- Advanced Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <i class="fas fa-graduation-cap" style="font-size: 1.8rem; color: var(--lb-500);"></i>
+        <h1>DORAH BLOCH Advanced System</h1>
+      </div>
+      <div class="nav-stats">
+        <div class="nav-stat">
+          <div class="nav-stat-value" id="totalStudentsNav">1,245</div>
+          <div class="nav-stat-label">Students</div>
+        </div>
+        <div class="nav-stat">
+          <div class="nav-stat-value" id="liveSessionsNav">12</div>
+          <div class="nav-stat-label">Live Sessions</div>
+        </div>
+        <div class="nav-stat">
+          <div class="nav-stat-value" id="avgPerformanceNav">86.5%</div>
+          <div class="nav-stat-label">Avg Score</div>
+        </div>
+        <div class="sync-indicator">
+          <div class="sync-dot"></div>
+          <span>Live Sync</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Dashboard -->
+  <div class="dashboard-container">
+    <!-- KPI Cards -->
+    <div class="kpi-card live">
+      <div class="kpi-label"><i class="fas fa-users"></i> Total Students</div>
+      <div class="kpi-value" id="kpiStudents">1,245</div>
+      <div class="kpi-change positive"><i class="fas fa-arrow-up"></i> +8.5% this month</div>
+    </div>
+
+    <div class="kpi-card live">
+      <div class="kpi-label"><i class="fas fa-chalkboard"></i> Active Classes</div>
+      <div class="kpi-value" id="kpiClasses">45</div>
+      <div class="kpi-change positive"><i class="fas fa-arrow-up"></i> +3 classes</div>
+    </div>
+
+    <div class="kpi-card live">
+      <div class="kpi-label"><i class="fas fa-chart-line"></i> Avg Performance</div>
+      <div class="kpi-value" id="kpiPerf">86.5%</div>
+      <div class="kpi-change positive"><i class="fas fa-arrow-up"></i> +2.3% improvement</div>
+    </div>
+
+    <div class="kpi-card live">
+      <div class="kpi-label"><i class="fas fa-user-check"></i> Attendance Rate</div>
+      <div class="kpi-value" id="kpiAttend">94.2%</div>
+      <div class="kpi-change positive"><i class="fas fa-arrow-up"></i> +1.2% increase</div>
+    </div>
+
+    <!-- Filter Panel -->
+    <div class="filter-panel" style="grid-column: 1 / -1;">
+      <div class="filter-group">
+        <select class="filter-select" id="filterClass">
+          <option value="">All Classes</option>
+          <option value="Senior 5">Senior 5</option>
+          <option value="Senior 6">Senior 6</option>
+          <option value="Senior 4">Senior 4</option>
+        </select>
+        <select class="filter-select" id="filterStatus">
+          <option value="">All Status</option>
+          <option value="active">Active</option>
+          <option value="pending">Pending</option>
+          <option value="inactive">Inactive</option>
+        </select>
+        <input type="date" class="filter-select" id="filterDate">
+        <button class="btn-filter" onclick="applyFilters()"><i class="fas fa-filter"></i> Apply Filters</button>
+        <button class="btn-filter" style="background: var(--grey-600);" onclick="resetFilters()"><i class="fas fa-redo"></i> Reset</button>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-grid">
+      <div class="chart-container">
+        <div class="chart-title">
+          <span><i class="fas fa-chart-bar"></i> Student Performance Distribution</span>
+          <span style="font-size: 0.85rem; color: var(--grey-600);">Real-time</span>
+        </div>
+        <canvas id="performanceChart"></canvas>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">
+          <span><i class="fas fa-calendar"></i> Enrollment Trends</span>
+          <span style="font-size: 0.85rem; color: var(--grey-600);">Last 12 months</span>
+        </div>
+        <div id="enrollmentChart"></div>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">
+          <span><i class="fas fa-percentage"></i> Grade Distribution</span>
+          <span style="font-size: 0.85rem; color: var(--grey-600);">Current semester</span>
+        </div>
+        <canvas id="gradeChart"></canvas>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-title">
+          <span><i class="fas fa-clock"></i> Attendance by Class</span>
+          <span style="font-size: 0.85rem; color: var(--grey-600);">This week</span>
+        </div>
+        <canvas id="attendanceChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Real-Time Student Table -->
+    <div class="real-time-table">
+      <div class="table-header">
+        <h2><i class="fas fa-table"></i> Student Directory (Real-Time)</h2>
+        <div class="table-controls">
+          <input type="text" class="search-box" id="studentSearch" placeholder="Search by name, ID, or email...">
+          <button class="btn-filter" onclick="exportData()"><i class="fas fa-download"></i> Export</button>
+        </div>
+      </div>
+      <table id="studentTable">
+        <thead>
+          <tr>
+            <th>Student Name</th>
+            <th>Student ID</th>
+            <th>Class</th>
+            <th>Performance</th>
+            <th>Attendance</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="studentTableBody">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Real-Time Notifications -->
+    <div class="notification-panel">
+      <div class="table-header">
+        <h2><i class="fas fa-bell"></i> Real-Time Activity Feed</h2>
+        <button class="btn-filter" style="background: var(--grey-600);" onclick="clearNotifications()"><i class="fas fa-trash"></i> Clear All</button>
+      </div>
+      <div id="notificationContainer">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- Performance Analytics -->
+    <div class="chart-container" style="grid-column: 1 / -1;">
+      <div class="chart-title">
+        <span><i class="fas fa-chart-line"></i> Detailed Performance Analytics</span>
+        <span style="font-size: 0.85rem; color: var(--grey-600);">Subject-wise breakdown</span>
+      </div>
+      <canvas id="subjectAnalyticsChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Modal for Details -->
+  <div class="modal" id="detailsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Student Details</h2>
+        <button class="close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
+      </div>
+      <div id="modalBody">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ========== ADVANCED DATA MANAGEMENT ==========
+    const advancedStudentDatabase = {
+      "DB1001": { name: "Amara Nambi", class: "Senior 5", email: "amara@dorahbloch.sc.ug", subjects: { Mathematics: 88, English: 79, Physics: 92, Chemistry: 85, Biology: 90 }, attendance: 96, status: "active", joinDate: "2023-01-15", performance: 86.8 },
+      "DB1002": { name: "Ethan Ochieng", class: "Senior 6", email: "ethan@dorahbloch.sc.ug", subjects: { Mathematics: 96, English: 88, Physics: 94, Chemistry: 91, Biology: 89 }, attendance: 98, status: "active", joinDate: "2022-06-10", performance: 91.6 },
+      "DB1003": { name: "Grace Mirembe", class: "Senior 5", email: "grace@dorahbloch.sc.ug", subjects: { Mathematics: 74, English: 82, Physics: 68, Chemistry: 71, Biology: 79 }, attendance: 92, status: "active", joinDate: "2023-03-22", performance: 74.8 },
+      "DB1004": { name: "Joshua Byaruhanga", class: "Senior 4", email: "joshua@dorahbloch.sc.ug", subjects: { Mathematics: 55, English: 62, Physics: 58, Chemistry: 49, Biology: 60 }, attendance: 88, status: "pending", joinDate: "2024-01-05", performance: 56.8 },
+      "DB1005": { name: "Princess Nakato", class: "Senior 6", email: "princess@dorahbloch.sc.ug", subjects: { Mathematics: 99, English: 97, Physics: 98, Chemistry: 96, Biology: 100 }, attendance: 100, status: "active", joinDate: "2022-01-20", performance: 98.0 },
+      "DB1006": { name: "David Kipchoge", class: "Senior 5", email: "david@dorahbloch.sc.ug", subjects: { Mathematics: 85, English: 88, Physics: 90, Chemistry: 87, Biology: 89 }, attendance: 95, status: "active", joinDate: "2023-02-14", performance: 87.8 },
+      "DB1007": { name: "Sarah Kyambadde", class: "Senior 4", email: "sarah@dorahbloch.sc.ug", subjects: { Mathematics: 92, English: 91, Physics: 89, Chemistry: 90, Biology: 94 }, attendance: 97, status: "active", joinDate: "2024-01-10", performance: 91.2 },
+      "DB1008": { name: "Michael Okello", class: "Senior 6", email: "michael@dorahbloch.sc.ug", subjects: { Mathematics: 80, English: 75, Physics: 82, Chemistry: 78, Biology: 81 }, attendance: 91, status: "active", joinDate: "2022-09-01", performance: 79.2 },
+    };
+
+    let filteredStudents = [...Object.entries(advancedStudentDatabase)];
+    let allNotifications = [];
+    let chartInstances = {};
+
+    // ========== REAL-TIME DATA UPDATES ==========
+    function updateKPIs() {
+      const students = Object.values(advancedStudentDatabase);
+      const avgPerf = (students.reduce((sum, s) => sum + s.performance, 0) / students.length).toFixed(1);
+      const avgAttend = (students.reduce((sum, s) => sum + s.attendance, 0) / students.length).toFixed(1);
+      
+      document.getElementById('kpiStudents').textContent = students.length;
+      document.getElementById('kpiPerf').textContent = avgPerf + '%';
+      document.getElementById('kpiAttend').textContent = avgAttend + '%';
+      document.getElementById('kpiClasses').textContent = new Set(students.map(s => s.class)).size;
+      
+      // Nav stats
+      document.getElementById('totalStudentsNav').textContent = students.length;
+      document.getElementById('avgPerformanceNav').textContent = avgPerf + '%';
+      document.getElementById('liveSessionsNav').textContent = Math.floor(students.length / 10);
+    }
+
+    function populateStudentTable() {
+      const tbody = document.getElementById('studentTableBody');
+      tbody.innerHTML = '';
+      
+      filteredStudents.forEach(([id, student]) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td><strong>${student.name}</strong></td>
+          <td><code>${id}</code></td>
+          <td><span class="detail-item">${student.class}</span></td>
+          <td>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <div style="width: 60px; height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden;">
+                <div style="width: ${student.performance}%; height: 100%; background: ${student.performance >= 85 ? '#10b981' : student.performance >= 70 ? '#f59e0b' : '#ef4444'};"></div>
+              </div>
+              <span style="font-weight: 600;">${student.performance}%</span>
+            </div>
+          </td>
+          <td>${student.attendance}%</td>
+          <td><span class="status-badge status-${student.status}">${student.status.charAt(0).toUpperCase() + student.status.slice(1)}</span></td>
+          <td>
+            <button onclick="viewStudentDetails('${id}')" style="background: var(--lb-500); color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.4rem; cursor: pointer; font-weight: 600;">
+              <i class="fas fa-eye"></i> View
+            </button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function viewStudentDetails(studentId) {
+      const student = advancedStudentDatabase[studentId];
+      const modalBody = document.getElementById('modalBody');
+      
+      let subjectsHtml = '';
+      for (const [subject, score] of Object.entries(student.subjects)) {
+        subjectsHtml += `
+          <div style="margin-bottom: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <strong>${subject}</strong>
+              <span style="color: var(--lb-700); font-weight: 700;">${score}%</span>
+            </div>
+            <div style="width: 100%; height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden;">
+              <div style="width: ${score}%; height: 100%; background: linear-gradient(90deg, var(--lb-500), var(--lb-300));"></div>
+            </div>
+          </div>
+        `;
+      }
+      
+      modalBody.innerHTML = `
+        <div class="person-card" style="border: none; box-shadow: none;">
+          <div class="person-header">
+            <div class="person-avatar">${student.name.charAt(0)}</div>
+            <div class="person-info">
+              <div class="person-name">${student.name}</div>
+              <div class="person-id">${studentId}</div>
+            </div>
+          </div>
+          <div class="person-details">
+            <div class="detail-item"><strong>Class:</strong> ${student.class}</div>
+            <div class="detail-item"><strong>Email:</strong> ${student.email}</div>
+            <div class="detail-item"><strong>Joined:</strong> ${new Date(student.joinDate).toLocaleDateString()}</div>
+          </div>
+        </div>
+        <h3 style="margin-top: 1.5rem; margin-bottom: 1rem;">Subject Performance</h3>
+        <div>${subjectsHtml}</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem;">
+          <div style="background: var(--lb-50); padding: 1rem; border-radius: 0.8rem; text-align: center;">
+            <div style="font-size: 0.9rem; color: var(--grey-600);">Attendance Rate</div>
+            <div style="font-size: 2rem; font-weight: 700; color: var(--lb-700);">${student.attendance}%</div>
+          </div>
+          <div style="background: var(--lb-50); padding: 1rem; border-radius: 0.8rem; text-align: center;">
+            <div style="font-size: 0.9rem; color: var(--grey-600);">Overall Performance</div>
+            <div style="font-size: 2rem; font-weight: 700; color: var(--lb-700);">${student.performance}%</div>
+          </div>
+        </div>
+      `;
+      
+      document.getElementById('detailsModal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('detailsModal').classList.remove('active');
+    }
+
+    // ========== ADVANCED CHARTS ==========
+    function initPerformanceChart() {
+      const ctx = document.getElementById('performanceChart')?.getContext('2d');
+      if (!ctx) return;
+      
+      const students = Object.values(advancedStudentDatabase);
+      const grades = {
+        'A++ (95-100%)': students.filter(s => s.performance >= 95).length,
+        'A+ (90-94%)': students.filter(s => s.performance >= 90 && s.performance < 95).length,
+        'A (85-89%)': students.filter(s => s.performance >= 85 && s.performance < 90).length,
+        'B+ (80-84%)': students.filter(s => s.performance >= 80 && s.performance < 85).length,
+        'B (70-79%)': students.filter(s => s.performance >= 70 && s.performance < 80).length,
+        'C (Below 70%)': students.filter(s => s.performance < 70).length,
+      };
+
+      if (chartInstances.performance) chartInstances.performance.destroy();
+      
+      chartInstances.performance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: Object.keys(grades),
+          datasets: [{
+            label: 'Number of Students',
+            data: Object.values(grades),
+            backgroundColor: [
+              '#059669',
+              '#10b981',
+              '#6ee7b7',
+              '#a7f3d0',
+              '#d1fae5',
+              '#fee2e2'
+            ],
+            borderRadius: 8,
+            borderSkipped: false
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: { position: 'top', labels: { font: { size: 12, weight: 'bold' } } }
+          },
+          scales: {
+            y: { beginAtZero: true, ticks: { stepSize: 1 } }
+          }
+        }
+      });
+    }
+
+    function initEnrollmentChart() {
+      const options = {
+        chart: { type: 'line', height: 300 },
+        series: [{
+          name: 'New Enrollments',
+          data: [12, 19, 15, 22, 18, 25, 28, 32, 35, 38, 42, 45]
+        }],
+        xaxis: {
+          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+        colors: ['#2c7bc0'],
+        stroke: { width: 3, curve: 'smooth' }
+      };
+      
+      if (chartInstances.enrollment) chartInstances.enrollment.destroy();
+      chartInstances.enrollment = new ApexCharts(document.getElementById('enrollmentChart'), options);
+      chartInstances.enrollment.render();
+    }
+
+    function initGradeChart() {
+      const ctx = document.getElementById('gradeChart')?.getContext('2d');
+      if (!ctx) return;
+
+      const students = Object.values(advancedStudentDatabase);
+      const subjects = ['Mathematics', 'English', 'Physics', 'Chemistry', 'Biology'];
+      
+      if (chartInstances.grade) chartInstances.grade.destroy();
+      
+      chartInstances.grade = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['A++ (95+)', 'A+ (90-94)', 'A (85-89)', 'B+ (80-84)', 'B+ (70-79)', 'Below 70'],
+          datasets: [{
+            data: [
+              students.filter(s => s.performance >= 95).length,
+              students.filter(s => s.performance >= 90 && s.performance < 95).length,
+              students.filter(s => s.performance >= 85 && s.performance < 90).length,
+              students.filter(s => s.performance >= 80 && s.performance < 85).length,
+              students.filter(s => s.performance >= 70 && s.performance < 80).length,
+              students.filter(s => s.performance < 70).length
+            ],
+            backgroundColor: ['#059669', '#10b981', '#6ee7b7', '#a7f3d0', '#d1fae5', '#fecaca']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { position: 'right' } }
+        }
+      });
+    }
+
+    function initAttendanceChart() {
+      const ctx = document.getElementById('attendanceChart')?.getContext('2d');
+      if (!ctx) return;
+
+      const students = Object.values(advancedStudentDatabase);
+      const classesList = [...new Set(students.map(s => s.class))];
+      const classAttendance = classesList.map(c => {
+        const classStudents = students.filter(s => s.class === c);
+        return classStudents.reduce((sum, s) => sum + s.attendance, 0) / classStudents.length;
+      });
+
+      if (chartInstances.attendance) chartInstances.attendance.destroy();
+      
+      chartInstances.attendance = new Chart(ctx, {
+        type: 'radar',
+        data: {
+          labels: classesList,
+          datasets: [{
+            label: 'Attendance Rate (%)',
+            data: classAttendance,
+            borderColor: '#2c7bc0',
+            backgroundColor: 'rgba(44, 123, 192, 0.1)',
+            pointBackgroundColor: '#2c7bc0',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { position: 'top' } },
+          scales: { r: { beginAtZero: true, max: 100 } }
+        }
+      });
+    }
+
+    function initSubjectAnalyticsChart() {
+      const ctx = document.getElementById('subjectAnalyticsChart')?.getContext('2d');
+      if (!ctx) return;
+
+      const students = Object.values(advancedStudentDatabase);
+      const subjects = ['Mathematics', 'English', 'Physics', 'Chemistry', 'Biology'];
+      
+      const subjectAverages = subjects.map(subject => {
+        const scores = students.map(s => s.subjects[subject]);
+        return (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1);
+      });
+
+      if (chartInstances.subjectAnalytics) chartInstances.subjectAnalytics.destroy();
+      
+      chartInstances.subjectAnalytics = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: subjects,
+          datasets: [{
+            label: 'Average Score',
+            data: subjectAverages,
+            borderColor: '#2c7bc0',
+            backgroundColor: 'rgba(44, 123, 192, 0.1)',
+            fill: true,
+            tension: 0.4,
+            pointBackgroundColor: '#2c7bc0',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2,
+            pointRadius: 5
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { position: 'top' } },
+          scales: { y: { beginAtZero: true, max: 100 } }
+        }
+      });
+    }
+
+    // ========== NOTIFICATIONS ==========
+    function addNotification(title, message, type = 'info') {
+      const notification = {
+        id: Date.now(),
+        title,
+        message,
+        type,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+      
+      allNotifications.unshift(notification);
+      if (allNotifications.length > 10) allNotifications.pop();
+      
+      updateNotificationUI();
+    }
+
+    function updateNotificationUI() {
+      const container = document.getElementById('notificationContainer');
+      container.innerHTML = allNotifications.map(notif => `
+        <div class="notification-item" style="border-left-color: ${notif.type === 'error' ? '#ef4444' : notif.type === 'warning' ? '#f59e0b' : '#2c7bc0'};">
+          <div class="notification-content">
+            <strong>${notif.title}</strong>
+            <p style="margin: 0.3rem 0 0 0; color: var(--grey-600);">${notif.message}</p>
+          </div>
+          <div class="notification-time">${notif.time}</div>
+        </div>
+      `).join('');
+    }
+
+    function clearNotifications() {
+      allNotifications = [];
+      updateNotificationUI();
+    }
+
+    // ========== SEARCH & FILTER ==========
+    function applyFilters() {
+      const classFilter = document.getElementById('filterClass').value;
+      const statusFilter = document.getElementById('filterStatus').value;
+      
+      filteredStudents = Object.entries(advancedStudentDatabase).filter(([id, student]) => {
+        const matchClass = !classFilter || student.class === classFilter;
+        const matchStatus = !statusFilter || student.status === statusFilter;
+        return matchClass && matchStatus;
+      });
+      
+      populateStudentTable();
+      addNotification('Filter Applied', `Found ${filteredStudents.length} matching students`, 'info');
+    }
+
+    function resetFilters() {
+      document.getElementById('filterClass').value = '';
+      document.getElementById('filterStatus').value = '';
+      document.getElementById('filterDate').value = '';
+      document.getElementById('studentSearch').value = '';
+      filteredStudents = Object.entries(advancedStudentDatabase);
+      populateStudentTable();
+      addNotification('Filters Reset', 'Showing all students', 'info');
+    }
+
+    document.getElementById('studentSearch')?.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      filteredStudents = Object.entries(advancedStudentDatabase).filter(([id, student]) => {
+        return student.name.toLowerCase().includes(query) || 
+               id.toLowerCase().includes(query) || 
+               student.email.toLowerCase().includes(query);
+      });
+      populateStudentTable();
+    });
+
+    function exportData() {
+      const csv = [['Name', 'ID', 'Class', 'Performance', 'Attendance', 'Status']];
+      filteredStudents.forEach(([id, student]) => {
+        csv.push([student.name, id, student.class, student.performance, student.attendance, student.status]);
+      });
+      
+      const csvContent = csv.map(row => row.join(',')).join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'students_export.csv';
+      a.click();
+      
+      addNotification('Export Successful', `Exported ${filteredStudents.length} records`, 'info');
+    }
+
+    // ========== REAL-TIME SIMULATIONS ==========
+    function simulateRealTimeUpdates() {
+      setInterval(() => {
+        const students = Object.values(advancedStudentDatabase);
+        const randomStudent = students[Math.floor(Math.random() * students.length)];
+        const events = [
+          { title: 'New Submission', message: `${randomStudent.name} submitted assignment` },
+          { title: 'Attendance', message: `${randomStudent.name} marked present` },
+          { title: 'Performance Update', message: `${randomStudent.name}'s score updated to ${randomStudent.performance}%` },
+          { title: 'Grade Change', message: `${randomStudent.name} improved performance` }
+        ];
+        
+        const event = events[Math.floor(Math.random() * events.length)];
+        addNotification(event.title, event.message, 'info');
+      }, 8000);
+    }
+
+    // ========== INITIALIZATION ==========
+    document.addEventListener('DOMContentLoaded', () => {
+      updateKPIs();
+      populateStudentTable();
+      initPerformanceChart();
+      initEnrollmentChart();
+      initGradeChart();
+      initAttendanceChart();
+      initSubjectAnalyticsChart();
+      
+      addNotification('System Started', 'Advanced Real-Time Dashboard Loaded', 'info');
+      simulateRealTimeUpdates();
+      
+      // Refresh charts every 10 seconds
+      setInterval(() => {
+        initPerformanceChart();
+        initGradeChart();
+        initAttendanceChart();
+        initSubjectAnalyticsChart();
+      }, 10000);
+    });
+
+    // Modal close on outside click
+    document.getElementById('detailsModal')?.addEventListener('click', (e) => {
+      if (e.target === document.getElementById('detailsModal')) closeModal();
+    });
+  </script>
+</body>
+</html>
