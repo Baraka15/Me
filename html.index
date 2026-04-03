@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Dorah Bloch International School Bweyale | Excellence in Light Blue & Grey</title>
+  <!-- Google Fonts + Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f9ff;
+      color: #1e2a3e;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    /* Light Blue & Grey Palette */
+    :root {
+      --light-blue-50: #eef6fc;
+      --light-blue-100: #d9eaf8;
+      --light-blue-400: #5faee3;
+      --light-blue-600: #2c7bc0;
+      --light-blue-800: #145c8f;
+      --grey-50: #f8fafc;
+      --grey-200: #e2e8f0;
+      --grey-500: #6c7a91;
+      --grey-700: #334155;
+      --grey-900: #0f172a;
+      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      --transition-smooth: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    /* custom scroll */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--grey-200);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--light-blue-400);
+      border-radius: 10px;
+    }
+
+    /* background batch image overlays */
+    .batch-bg {
+      background-image: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+      background-size: cover;
+      background-position: center 30%;
+      position: relative;
+    }
+    .batch-bg::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(44, 123, 192, 0.85) 0%, rgba(15, 23, 42, 0.7) 100%);
+      backdrop-filter: brightness(0.95);
+      z-index: 0;
+    }
+    .batch-bg > * {
+      position: relative;
+      z-index: 2;
+    }
+
+    .section-bg-light {
+      background: linear-gradient(120deg, #ffffff 0%, #f1f8fe 100%);
+    }
+
+    /* Navbar */
+    .navbar {
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: var(--transition-smooth);
+    }
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .logo h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--light-blue-800), var(--light-blue-400));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.3px;
+    }
+    .logo p {
+      font-size: 0.7rem;
+      color: var(--grey-500);
+      letter-spacing: 0.5px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 600;
+      color: var(--grey-700);
+      transition: 0.2s;
+      font-size: 0.95rem;
+    }
+    .nav-links a:hover {
+      color: var(--light-blue-600);
+    }
+    /* hero */
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      padding: 2rem;
+    }
+    .hero-content h2 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      font-family: 'Playfair Display', serif;
+      text-shadow: 0 2px 15px rgba(0,0,0,0.3);
+    }
+    .hero-content p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 1rem auto;
+      font-weight: 400;
+    }
+    .btn-group {
+      margin-top: 2rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 0.9rem 2rem;
+      border-radius: 40px;
+      font-weight: 700;
+      transition: all 0.25s ease;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 1rem;
+    }
+    .btn-primary {
+      background: var(--light-blue-600);
+      color: white;
+      box-shadow: 0 8px 20px rgba(44,123,192,0.3);
+    }
+    .btn-primary:hover {
+      background: var(--light-blue-800);
+      transform: translateY(-3px);
+    }
+    .btn-outline-light {
+      border: 2px solid white;
+      color: white;
+      background: transparent;
+    }
+    .btn-outline-light:hover {
+      background: white;
+      color: var(--light-blue-800);
+    }
+
+    /* containers */
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      position: relative;
+      display: inline-block;
+    }
+    .section-title:after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 0;
+      width: 70px;
+      height: 4px;
+      background: var(--light-blue-600);
+      border-radius: 2px;
+    }
+    .grid-2col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.5rem;
+      margin-top: 3rem;
+    }
+    .card {
+      background: white;
+      border-radius: 32px;
+      padding: 2rem;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+      transition: var(--transition-smooth);
+      border: 1px solid rgba(95, 174, 227, 0.2);
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-xl);
+    }
+    /* real-time result & admission forms */
+    .result-box, .admission-box {
+      background: white;
+      border-radius: 2rem;
+      padding: 2rem;
+      margin-top: 1rem;
+      box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
+    }
+    .form-control {
+      width: 100%;
+      padding: 0.9rem 1.2rem;
+      border: 1px solid var(--grey-200);
+      border-radius: 60px;
+      font-size: 1rem;
+      transition: 0.2s;
+      margin-bottom: 1rem;
+      font-family: 'Inter', sans-serif;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--light-blue-400);
+      box-shadow: 0 0 0 3px rgba(95,174,227,0.2);
+    }
+    button {
+      background: var(--light-blue-600);
+      border: none;
+      color: white;
+      font-weight: 700;
+      padding: 0.8rem 2rem;
+      border-radius: 60px;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 1rem;
+    }
+    button:hover {
+      background: var(--light-blue-800);
+      transform: scale(0.98);
+    }
+    .result-card {
+      margin-top: 2rem;
+      background: var(--light-blue-50);
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      border-left: 6px solid var(--light-blue-600);
+    }
+    .subject-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px,1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .admissions-list {
+      margin-top: 2rem;
+      max-height: 280px;
+      overflow-y: auto;
+      background: var(--grey-50);
+      border-radius: 1.5rem;
+      padding: 0.8rem;
+    }
+    .admission-item {
+      background: white;
+      margin: 0.5rem 0;
+      padding: 0.8rem 1rem;
+      border-radius: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid var(--grey-200);
+      font-size: 0.85rem;
+    }
+    .badge {
+      background: var(--light-blue-100);
+      color: var(--light-blue-800);
+      border-radius: 40px;
+      padding: 0.2rem 0.8rem;
+      font-weight: 600;
+    }
+    .live-clock {
+      font-family: monospace;
+      background: rgba(0,0,0,0.05);
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      font-weight: 500;
+    }
+    footer {
+      background: var(--grey-900);
+      color: #94a3b8;
+      padding: 2rem;
+      text-align: center;
+    }
+    @media (max-width: 800px) {
+      .nav-links { gap: 1rem; margin-top: 0.8rem; flex-wrap: wrap; justify-content: center; }
+      .hero-content h2 { font-size: 2.2rem; }
+      .container { padding: 2rem 1.5rem; }
+    }
+    .alert {
+      background: #e3f2fd;
+      border-radius: 20px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <h1>📘 DORAH BLOCH</h1>
+        <p>International School Bweyale</p>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#results">Results Live</a></li>
+        <li><a href="#admissions">Senior Admissions</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="live-clock" id="liveClock"></div>
+    </div>
+  </nav>
+
+  <!-- Hero Section with batch image background (light blue/grey uniform theme) -->
+  <section id="home" class="batch-bg hero">
+    <div class="hero-content">
+      <h2>Where Excellence Meets <span style="color:#b9e0ff;">Light Blue & Grey</span></h2>
+      <p>Empowering future leaders with real-time academic access & seamless senior admissions. Uniform pride: Light Blue & Grey.</p>
+      <div class="btn-group">
+        <a href="#results" class="btn btn-primary"><i class="fas fa-chart-line"></i> Check Results Real-Time</a>
+        <a href="#admissions" class="btn btn-outline-light"><i class="fas fa-user-graduate"></i> Senior Admission</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About + School highlights -->
+  <section id="about" class="section-bg-light">
+    <div class="container">
+      <h2 class="section-title">About Dorah Bloch International</h2>
+      <div class="grid-2col">
+        <div class="card">
+          <i class="fas fa-school" style="font-size: 2.5rem; color: var(--light-blue-600); margin-bottom: 1rem;"></i>
+          <h3>Legacy of Excellence</h3>
+          <p>Located in Bweyale, Dorah Bloch International School offers world-class Cambridge & National curriculum. Our signature Light Blue & Grey uniform symbolizes discipline, unity, and academic brilliance.</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-chalkboard-user" style="font-size: 2.5rem; color: var(--light-blue-600); margin-bottom: 1rem;"></i>
+          <h3>Tech-Driven Campus</h3>
+          <p>Real-time result portal, digital classrooms, and advanced labs. We ensure every learner accesses performance metrics instantly — empowering parents & students.</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-globe" style="font-size: 2.5rem; color: var(--light-blue-600); margin-bottom: 1rem;"></i>
+          <h3>Global Community</h3>
+          <p>Students from East Africa and beyond. Holistic education with sports, arts, and leadership. The Light Blue & Grey batch of 2025 shines bright.</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-laptop-code" style="font-size: 2.5rem; color: var(--light-blue-600); margin-bottom: 1rem;"></i>
+          <h3>Real-Time Innovation</h3>
+          <p>Our system provides live results & instant senior admission processing. No delays, total transparency.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REAL TIME RESULTS PORTAL (Learners access results instantly) -->
+  <section id="results" class="container">
+    <h2 class="section-title">📊 Live Results Portal</h2>
+    <p style="margin-bottom: 1.5rem;">Enter your Student ID to fetch real-time academic performance. <strong>Demo IDs: STU1001, STU1002, STU1003, STU1004, STU1005</strong></p>
+    <div class="result-box">
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <input type="text" id="studentId" class="form-control" placeholder="Student ID (e.g. STU1001)" style="flex:2;">
+        <button id="fetchResultBtn"><i class="fas fa-search"></i> Fetch Results Now</button>
+      </div>
+      <div id="resultDisplayArea" style="margin-top: 2rem;">
+        <!-- dynamic result card appears here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- SENIOR ADMISSIONS ONLINE - REAL TIME (for senior ones) -->
+  <section id="admissions" class="section-bg-light">
+    <div class="container">
+      <h2 class="section-title">🎓 Senior Admissions (Real-Time)</h2>
+      <p>Apply for Senior 5 or Senior 6 (A-Level). Once submitted, application appears instantly. No refresh needed!</p>
+      <div class="grid-2col" style="align-items: start;">
+        <!-- admission form -->
+        <div class="admission-box">
+          <h3><i class="fas fa-pen-alt"></i> Online Application</h3>
+          <form id="seniorAdmissionForm">
+            <input type="text" id="fullName" class="form-control" placeholder="Full Name *" required>
+            <input type="email" id="email" class="form-control" placeholder="Email Address *" required>
+            <input type="tel" id="phone" class="form-control" placeholder="Phone Number">
+            <select id="gradeLevel" class="form-control" required>
+              <option value="">Select Senior Class</option>
+              <option value="Senior 5">Senior 5 (Light Blue & Grey Batch)</option>
+              <option value="Senior 6">Senior 6 (Graduating Class)</option>
+            </select>
+            <input type="text" id="prevSchool" class="form-control" placeholder="Previous School">
+            <button type="submit" id="submitAdmissionBtn"><i class="fas fa-paper-plane"></i> Submit Admission (Real-Time)</button>
+          </form>
+          <div id="admissionMessage" class="alert" style="display:none;"></div>
+        </div>
+        <!-- live admissions list (real-time updates) -->
+        <div>
+          <div class="card" style="background:white;">
+            <h3><i class="fas fa-users"></i> Live Admission Requests <span id="admissionCounter" class="badge">0</span></h3>
+            <div id="recentAdmissionsList" class="admissions-list">
+              <p style="color: var(--grey-500);">No applications yet. Submit a senior admission to see real-time updates.</p>
+            </div>
+            <p style="font-size: 0.7rem; margin-top: 0.5rem;">⚡ Real-time sync · Instant confirmation</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- More about school + uniform showcase & batch background -->
+  <section class="container">
+    <div class="card" style="background: linear-gradient(115deg, #fff, var(--light-blue-50));">
+      <div style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: center;">
+        <div style="flex:1">
+          <h3 style="font-size: 1.8rem;">💙 The Light Blue & Grey Legacy</h3>
+          <p>Our students wear the uniform with pride — light blue shirts and grey trousers/skirts symbolizing calm intellect and strength. The batch of 2025 achieved 98% pass rate. Every learner is part of a prestigious family.</p>
+          <p><i class="fas fa-check-circle" style="color: var(--light-blue-600);"></i> Real-time analytics dashboard for parents</p>
+          <p><i class="fas fa-check-circle" style="color: var(--light-blue-600);"></i> Secure, instant admission processing</p>
+        </div>
+        <div style="flex:1; text-align: center;">
+          <i class="fas fa-user-graduate" style="font-size: 6rem; color: var(--light-blue-600); opacity: 0.7;"></i>
+          <p style="margin-top: 1rem;"><strong>Uniform Code:</strong> Light Blue Shirt + Grey Bottom</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section-bg-light">
+    <div class="container">
+      <h2 class="section-title">Get in Touch</h2>
+      <div class="grid-2col">
+        <div>
+          <p><i class="fas fa-map-marker-alt"></i> Bweyale Town, Kiryandongo District, Uganda</p>
+          <p><i class="fas fa-phone-alt"></i> +256 772 123 456</p>
+          <p><i class="fas fa-envelope"></i> admissions@dorahbloch.sc.ug</p>
+          <div style="margin-top: 1rem;">
+            <i class="fab fa-facebook fa-2x" style="margin-right: 1rem; color: var(--light-blue-600);"></i>
+            <i class="fab fa-twitter fa-2x" style="margin-right: 1rem; color: var(--light-blue-600);"></i>
+            <i class="fab fa-instagram fa-2x" style="color: var(--light-blue-600);"></i>
+          </div>
+        </div>
+        <div class="card" style="background: white;">
+          <h4>📞 Quick Inquiry</h4>
+          <input type="text" placeholder="Your Name" class="form-control">
+          <input type="email" placeholder="Email" class="form-control">
+          <textarea rows="2" placeholder="Message" class="form-control" style="border-radius: 24px;"></textarea>
+          <button>Send Message</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 Dorah Bloch International School Bweyale — Light Blue & Grey Uniform Excellence | Real-Time Academic Ecosystem</p>
+    <p style="margin-top: 0.5rem;">⚡ Results & Admissions update instantly — No page reloads | $50k Experience</p>
+  </footer>
+
+  <script>
+    // --------------------------------
+    // MOCK REAL-TIME RESULTS DATABASE
+    const resultsDB = {
+      "STU1001": { name: "Aisha Nabatanzi", class: "Senior 5", subjects: { Mathematics: 85, English: 78, Physics: 88, Chemistry: 76, Biology: 90 }, total: 417, grade: "A", percentage: "83.4%" },
+      "STU1002": { name: "John Mukasa", class: "Senior 4", subjects: { Mathematics: 92, English: 88, Physics: 85, Chemistry: 89, Biology: 87 }, total: 441, grade: "A+", percentage: "88.2%" },
+      "STU1003": { name: "Patience Atukunda", class: "Senior 6", subjects: { Mathematics: 70, English: 68, Physics: 72, Chemistry: 65, Biology: 74 }, total: 349, grade: "B+", percentage: "69.8%" },
+      "STU1004": { name: "Emmanuel Okello", class: "Senior 5", subjects: { Mathematics: 45, English: 52, Physics: 48, Chemistry: 41, Biology: 49 }, total: 235, grade: "C", percentage: "47.0%" },
+      "STU1005": { name: "Grace Among", class: "Senior 4", subjects: { Mathematics: 96, English: 94, Physics: 91, Chemistry: 93, Biology: 97 }, total: 471, grade: "A+", percentage: "94.2%" }
+    };
+    
+    // Real-time result fetching
+    const fetchBtn = document.getElementById('fetchResultBtn');
+    const studentIdInput = document.getElementById('studentId');
+    const resultArea = document.getElementById('resultDisplayArea');
+
+    function displayResult(studentId) {
+      const data = resultsDB[studentId.toUpperCase()];
+      if (!data) {
+        resultArea.innerHTML = `<div class="result-card" style="background:#ffe6e6; border-left-color:#d14545;"><i class="fas fa-exclamation-triangle"></i> No student found with ID: ${studentId}. Use demo IDs: STU1001-STU1005</div>`;
+        return;
+      }
+      let subjectsHtml = `<div class="subject-grid">`;
+      for (let [sub, score] of Object.entries(data.subjects)) {
+        subjectsHtml += `<div><strong>${sub}</strong>: ${score}%</div>`;
+      }
+      subjectsHtml += `</div>`;
+      const resultHtml = `
+        <div class="result-card">
+          <div style="display:flex; justify-content:space-between; flex-wrap:wrap;">
+            <h3>📘 ${data.name}  <span class="badge">ID: ${studentId}</span></h3>
+            <h4>Class: ${data.class}  |  Grade: ${data.grade}</h4>
+          </div>
+          ${subjectsHtml}
+          <hr style="margin: 12px 0;">
+          <div><strong>Total Marks:</strong> ${data.total} / 500 &nbsp; | &nbsp; <strong>Percentage:</strong> ${data.percentage} &nbsp; | &nbsp; <strong>Result Status:</strong> ${data.grade === 'A+' || data.grade === 'A' ? '🌟 Distinction' : (data.grade === 'B+' ? '✅ Credit' : '📖 Pass')}</div>
+          <p><i class="fas fa-clock"></i> Real-time fetch: ${new Date().toLocaleTimeString()}</p>
+        </div>
+      `;
+      resultArea.innerHTML = resultHtml;
+    }
+
+    fetchBtn.addEventListener('click', () => {
+      const id = studentIdInput.value.trim();
+      if (id === "") {
+        resultArea.innerHTML = `<div class="result-card" style="background:#fff0db;">⚠️ Please enter a Student ID (e.g., STU1001).</div>`;
+        return;
+      }
+      displayResult(id);
+    });
+
+    // --------------------------------
+    // SENIOR ADMISSIONS REAL-TIME SYSTEM (no backend, but fully functional live)
+    let admissionsArray = [];   // store all submissions in memory (real-time)
+    const form = document.getElementById('seniorAdmissionForm');
+    const admissionListDiv = document.getElementById('recentAdmissionsList');
+    const admissionCounterSpan = document.getElementById('admissionCounter');
+    const admissionMessageDiv = document.getElementById('admissionMessage');
+
+    function updateAdmissionsUI() {
+      // update counter
+      admissionCounterSpan.innerText = admissionsArray.length;
+      if (admissionsArray.length === 0) {
+        admissionListDiv.innerHTML = `<p style="color: var(--grey-500);">✨ No senior applications yet. Submit and see real-time magic.</p>`;
+        return;
+      }
+      // show latest 6 admissions (newest first)
+      const reversed = [...admissionsArray].reverse();
+      admissionListDiv.innerHTML = reversed.map(app => `
+        <div class="admission-item">
+          <div><i class="fas fa-user-check" style="color:#2c7bc0;"></i> <strong>${app.fullName}</strong> (${app.gradeLevel})</div>
+          <div><span class="badge">ID: ${app.appId}</span> <small>${app.timeStr}</small></div>
+        </div>
+      `).join('');
+    }
+
+    function generateAppId() {
+      return 'DBI' + Math.floor(Math.random() * 9000 + 1000) + '-' + new Date().getTime().toString().slice(-4);
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const fullName = document.getElementById('fullName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const gradeLevel = document.getElementById('gradeLevel').value;
+      const prevSchool = document.getElementById('prevSchool').value.trim();
+
+      if (!fullName || !email || !gradeLevel) {
+        admissionMessageDiv.style.display = 'block';
+        admissionMessageDiv.innerHTML = '<i class="fas fa-times-circle"></i> Please fill required fields: Full Name, Email & Senior Class.';
+        admissionMessageDiv.style.background = '#ffe0db';
+        setTimeout(() => { admissionMessageDiv.style.display = 'none'; }, 2800);
+        return;
+      }
+      if (!email.includes('@')) {
+        admissionMessageDiv.style.display = 'block';
+        admissionMessageDiv.innerHTML = '<i class="fas fa-envelope"></i> Provide valid email address.';
+        admissionMessageDiv.style.background = '#ffe0db';
+        setTimeout(() => { admissionMessageDiv.style.display = 'none'; }, 2500);
+        return;
+      }
+      
+      const newApplication = {
+        id: admissionsArray.length + 1,
+        appId: generateAppId(),
+        fullName: fullName,
+        email: email,
+        phone: phone || 'N/A',
+        gradeLevel: gradeLevel,
+        prevSchool: prevSchool || 'Not provided',
+        timeStr: new Date().toLocaleTimeString([], { hour: '2-digit', minute:'2-digit', second:'2-digit' }),
+        timestamp: Date.now()
+      };
+      
+      admissionsArray.push(newApplication);
+      updateAdmissionsUI();
+      
+      // reset form
+      form.reset();
+      // show success real-time message
+      admissionMessageDiv.style.display = 'block';
+      admissionMessageDiv.innerHTML = `<i class="fas fa-check-circle"></i> ✅ Admission submitted! Application ID: ${newApplication.appId}. Our team will contact you within 24h. (Real-time confirmation)`;
+      admissionMessageDiv.style.background = '#d4edda';
+      admissionMessageDiv.style.color = '#155724';
+      setTimeout(() => {
+        admissionMessageDiv.style.display = 'none';
+      }, 4000);
+      
+      // extra real-time effect: scroll to list
+      document.getElementById('recentAdmissionsList').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    // Real-time Live Clock
+    function updateClock() {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second:'2-digit' });
+      const dateString = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      document.getElementById('liveClock').innerHTML = `<i class="far fa-clock"></i> ${dateString} ${timeString}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Initialize with demo example admission to show real-time feature? (optional but gives vibrancy)
+    // Add a sample entry to show interface is working but not to clutter. I'll add one demo admission entry to demonstrate "live" working out of box?
+    // we push only if empty for demo experience without overpopulating but to showcase design, but not required, but might be nice to show.
+    if (admissionsArray.length === 0) {
+      // just for UI illustration that system works, but to avoid confusion I'll add a placeholder info? 
+      // Actually the message shows 'No applications yet' but it's fine, user will submit. I'll NOT auto-add to keep data clean.
+    }
+    
+    // optional: background batch image + uniform note
+    console.log("Real-time school system ready: results + senior admissions live");
+  </script>
+</body>
+</html>
